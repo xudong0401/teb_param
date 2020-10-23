@@ -1,0 +1,7 @@
+<!-- -->
+<launch>
+	<include file="$(find myrobot)/launch/includes/gmapping/gmapping.launch.xml"/>
+
+	<!--<node pkg="myrobot" name="publish_gmapping_pose" type="publish_gmapping_pose" respawn="true"/>-->
+	<!--<node pkg="myrobot" name="default_cmd_vel" type="default_cmd_vel" required="true"/>-->
+</launch>

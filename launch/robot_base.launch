@@ -1,0 +1,40 @@
+<launch>	
+   <!-- 机器人底盘 -->
+  <!--node pkg="myrobot" name="publish_odom" type="publish_odom" respawn="true"/-->
+  <node pkg="wmr_serial" name="wmr_serial_node" type="wmr_serial_node" output="log" respawn="true"/>
+  <!--<include file="$(find hector_compressed_map_transport)/launch/map_to_image.launch"/>-->
+  <include file="$(find bms_comm)/launch/bms_comm.launch"/>
+
+  <include file="$(find robot_sql_service)/launch/robot_sql_service.launch"/>
+  <include file="$(find report_form_server)/launch/report_form_server.launch"/>
+  <node pkg="robot_back_server" name="chassis_param_service" type="chassis_param_service.py" output="log" respawn="true"/>
+
+
+  <!-- 模型文件 -->
+  <include file="$(find robot_description)/launch/robot_module.launch"/>
+
+  <!-- 激光 -->
+  <arg name="2dsensor"  default="$(optenv SENSOR_2D hokuyo)"/>
+  <!-- rplidar, hokuyo -->
+  <arg name="use_filter" default="$(optenv USE_FILTER false)"/>
+  <!-- SICK Tim561-->
+  <include file="$(find sick_tim)/launch/sick_tim551_2050001.launch"/>
+  <include if="$(arg use_filter)" file="$(find exbotxi_bringup)/launch/includes/laser_filter.launch.xml">
+	<arg name="scan_in" value="scan_raw"/>
+	<arg name="scan_out" value="scan"/>
+	</include>
+  <include file="$(find laser_filters)/examples/shadow_filter_example.launch"/>
+
+  <!-- 速度平滑 -->
+  <include file="$(find yocs_cmd_vel_mux)/launch/standalone.launch"/>
+  <include file="$(find yocs_velocity_smoother)/launch/standalone_navi.launch"/>
+  <include file="$(find yocs_velocity_smoother)/launch/standalone_joy.launch"/>
+  <include file="$(find yocs_velocity_smoother)/launch/standalone_android.launch"/>
+  <include file="$(find yocs_velocity_smoother)/launch/standalone_safety.launch"/>
+
+  <!--<include file="$(find myrobot)/launch/includes/move_base.launch.xml"/>-->
+  <!--
+  <include file="$(find agv_move_control)/launch/agv_move_control.launch"/>
+  -->
+  <node pkg="myrobot" name="default_cmd_vel" type="default_cmd_vel" required="true"/>
+</launch>	

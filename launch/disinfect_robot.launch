@@ -1,0 +1,11 @@
+<launch>	
+  <include file="$(find myrobot)/launch/robot_base.launch"/>
+  <include file="$(find pad_service)/launch/pad_service.launch"/>
+  <!--<include file="$(find agv_move_control)/launch/agv_move_control.launch"/>-->
+  <!--<node pkg="myrobot" name="nav_mapping_switcher" type="nav_mapping_switcher" output="screen" respawn="true"/>	-->
+  <node pkg="myrobot" name="map_debug" type="map_debug" output="log" respawn="true"/>	
+  <node pkg="robot_back_server" name="robot_back_server" type="workstate_manager.py" output="log" respawn="true"/>	
+  <!--<include file="$(find myrobot)/launch/gmapping_laser.launch"/>-->
+  <!--<include file="$(find myrobot)/launch/amcl_laser.launch"/>-->
+  
+</launch>	

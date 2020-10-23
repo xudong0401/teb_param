@@ -1,0 +1,3 @@
+<launch>	
+  <include file="$(find myrobot)/launch/includes/move_base_teb_polygon.launch.xml"/>
+</launch>	
